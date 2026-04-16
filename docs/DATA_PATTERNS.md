@@ -90,10 +90,10 @@ Your tool should help engineers and managers:
 
 Rows with `severity IN ('high','critical')` have an `image_url` relative
 path (for example, `/defect_images/defect_01_cold_solder.jpg`). Prepend
-`http://<vm>:9000` from your handout to build a full image URL. 12 AI-generated industrial inspection
-photographs covering solder joints, housing cracks, burned components,
-lifted pads, etc. Use them in your UI and/or feed them to vision-capable
-LLMs for multimodal analysis.
+`http://<vm>:9000` from your handout to build a full image URL. 12
+industrial inspection photographs covering solder joints, housing cracks,
+burned components, lifted pads, etc. Use them in your UI to add visual
+context to defects.
 
 ## Time range
 

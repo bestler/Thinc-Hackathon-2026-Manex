@@ -43,7 +43,7 @@ toolkit. Use this when REST query shapes get painful.
 Studio is protected with HTTP Basic Auth. Use the `Studio Login` credentials
 from your handout before you can access the dashboard.
 
-## 4. Direct Postgres (for data-science stacks)
+## 4. Direct Postgres ´
 
 ```bash
 psql "postgres://team_writer_alpha:<pw>@<vm>:5431/hackathon"
@@ -70,7 +70,7 @@ Build full URLs by prepending the handout host and assets port:
 full_image_url = http://<vm>:9000 + image_url
 ```
 
-Then use the full URL in `<img src>` tags or vision-capable LLM calls.
+Use the full URL in `<img src>` tags to display them in your UI.
 
 ## 6. Writing data back
 

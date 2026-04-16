@@ -1,24 +1,41 @@
 # Manex Hackathon — Quality Report Module
 
-Build the next-generation Quality Report: replace static 8D/FMEA Excel
-documents with an interactive LLM-powered copilot. Three pillars:
+Welcome! Your challenge: build the next-generation Quality Report.
+Replace static 8D/FMEA Excel documents with an interactive LLM-powered
+copilot. Three pillars to explore:
 
-1. **Intelligent generation** — LLM drafts problem descriptions, root-cause
-   hypotheses, and report content from structured factory data.
-2. **Innovative visualization** — interactive fault trees, timelines, Pareto
-   analyses, BOM traceability views — whatever best exposes the story in
-   the data.
-3. **Closed-loop workflow** — write initiatives back to the database, assign
-   ownership, and track progress.
+1. **Intelligent generation** — let an LLM draft problem descriptions,
+   root-cause hypotheses, and report content from structured factory data.
+2. **Innovative visualization** — interactive fault trees, timelines,
+   Pareto analyses, BOM traceability views — whatever best exposes the
+   story in the data.
+3. **Closed-loop workflow** — write initiatives back to the database,
+   assign ownership, and track progress to close-out.
 
-## What we provide
+How far you take each pillar is up to you. Pick your angle, pick your stack.
 
-- A PostgreSQL database matching Manex production (19 tables, strict subset).
-- Synthetic but realistic data (~7,000 rows) with **four explicit root-cause
-  stories** documented in [docs/DATA_PATTERNS.md](docs/DATA_PATTERNS.md).
-- Three ways to access the data (REST, SQL editor, direct psql).
-- A per-team isolated Supabase-lite stack so teams cannot interfere.
-- Shared AI-generated defect images served as static files.
+## What you get
+
+- A **PostgreSQL database** mirroring Manex production (19 tables, strict subset).
+- **Synthetic but realistic data** (~7,000 rows) containing **four explicit
+  root-cause stories** — documented up front, no treasure hunt.
+  See [docs/DATA_PATTERNS.md](docs/DATA_PATTERNS.md).
+- **Three ways to access the data** — REST, SQL editor in the browser,
+  or direct Postgres from any client.
+- Your **own isolated stack** — teams cannot interfere with each other.
+- **Illustrative defect images** served as static files, referenced from
+  the data.
+- A **handout** (`team-<your-team>.txt`) with all URLs, credentials, and
+  API keys you need.
+
+## Start here
+
+1. Grab your handout from the organizers — it has your URLs and credentials.
+2. Read [docs/QUICKSTART.md](docs/QUICKSTART.md) — connect in < 5 minutes.
+3. Read [docs/DATA_PATTERNS.md](docs/DATA_PATTERNS.md) — the four stories
+   in the data define the challenge.
+4. Use [docs/API_REFERENCE.md](docs/API_REFERENCE.md) and
+   [docs/SCHEMA.md](docs/SCHEMA.md) as you build.
 
 ## Docs
 
@@ -27,48 +44,33 @@ documents with an interactive LLM-powered copilot. Three pillars:
 - [docs/SCHEMA.md](docs/SCHEMA.md) — entities, fields, ER diagram.
 - [docs/DATA_PATTERNS.md](docs/DATA_PATTERNS.md) — the four stories in the dataset.
 
-## Running locally (one team, local)
+## Defect images
 
-```bash
-./scripts/deploy-team.sh local 1
-cat handouts/team-local.txt
+`image_url` values in the dataset are relative paths (for example,
+`/defect_images/defect_01_cold_solder.jpg`). Prepend the assets host +
+port from your handout to render them, e.g.:
+
+```text
+http://<host>:9000 + image_url
 ```
 
-Adds a stack on ports 8001 / 8401 / 5431 with a unique API key.
+Use the full URL in `<img src>` tags to display them in your UI.
 
-## Running on the VM (operators only)
+## LLM access
 
-```bash
-# populate teams.txt with one slug per line, then:
-./scripts/deploy-all.sh
-```
+Bring your own API key (OpenAI / Anthropic / Gemini). If you don't have
+one, ask the organizers for a shared key — a modest budget is set aside.
 
-Each team gets their own isolated stack + credentials. Hand out the
-generated `handouts/team-<slug>.txt`.
+## Ground rules
 
-Note: `image_url` values in the dataset are relative paths (for example,
-`/defect_images/defect_01_cold_solder.jpg`). Participants should prepend
-the handout host + assets port to render images, for example:
-`http://<IP_ADRRESS>:9000` + `image_url`.
+- Seed tables are **read-protected from deletes** — you cannot
+  `DELETE FROM product` or `TRUNCATE defect`. This is a feature, not a bug.
+- You **can** `INSERT`/`UPDATE` on `product_action` and `rework`
+  (the closed-loop write targets).
+- You **can** `CREATE TABLE` for your own entities — PostgREST will
+  auto-expose them.
+- If seed data looks wrong, ask an organizer to reset your stack.
 
-## Regenerating seed data
+## Questions?
 
-```bash
-cd data-generation
-pip install -r requirements.txt
-# Create English template files manually (no API integration needed):
-# see data-generation/MANUAL_TEXT_PROMPTS.md
-python validate_templates.py --strict-english
-python generate.py
-# seed.sql now refreshed; redeploy or run reset-team.sh
-```
-
-Optional automated route (if desired):
-
-```bash
-cd data-generation
-export GOOGLE_API_KEY=...
-python generate_texts.py
-python validate_templates.py --strict-english
-python generate.py
-```
+Ask the organizers — in person, or on the hackathon chat. Good luck!
